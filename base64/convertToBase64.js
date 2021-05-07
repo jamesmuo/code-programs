@@ -1,6 +1,7 @@
 #!/usr/bin/node
 const fs = require("fs");
 
+//standalone nodeJS script
 if (process.argv.length == 3) {
     var imageData = fs.readFileSync(process.argv[2], "base64");
     var ext = process.argv[2].substr(process.argv[2].lastIndexOf(".") + 1);
