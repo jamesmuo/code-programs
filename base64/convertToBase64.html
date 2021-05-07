@@ -1,0 +1,63 @@
+<!-- base64 conversion: Input (Local or URL) File -->
+<html>
+    <head>
+        <title>Base64</title>
+        <script type="text/javascript">
+            const canvas = document.createElement('canvas');
+            
+            function processURL() {
+                let nimg = new Image();
+                const ctx = canvas.getContext('2d');
+                let img = document.querySelector("img");
+                let extfn = (ext) => (ext == "jpg")? "jpeg": ext;
+                nimg.src = document.querySelector("input[type='text']").value;
+                
+                nimg.onload = () => {
+                    try {
+                        canvas.width = nimg.width;
+                        canvas.height = nimg.height;
+                        ctx.drawImage(nimg, 0, 0);
+                        img.src = canvas.toDataURL("image/" + extfn(nimg.src.split(".").pop()));
+                    } catch (e) {
+                        console.error(e);
+                    }
+                };
+                
+                try {
+                    nimg.crossOrigin = "anonymous";
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+            
+            function processFile() {
+                let file = document.querySelector("input[type='file']").files[0];
+                let reader = new FileReader();
+                
+                reader.onload = () => {
+                    document.querySelector("img").src = reader.result;
+                };
+                
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h2>Base64 Image Conversion</h2>
+        
+        <div style="float:left; clear:right; width: 350px; border: 1px solid; padding: 10px;">
+            <input type="file"/>
+            <button onclick="processFile();">base64 File</button>
+        </div>
+        
+        <div style="float:left; clear:right; width: 350px; border: 1px solid; padding: 10px;">
+            <input type="text"/>
+            <button onclick="processURL();">base64 URL</button>
+        </div>
+        
+        <img style="float: left; clear:left; margin: 10px; padding: 5px; border: 1px solid;"
+             src="" alt=""/>
+    </body>
+</html>
